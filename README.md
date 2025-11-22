@@ -51,6 +51,56 @@ graph TD
     Notifications --> Email["Email/Push"]
 ```
 
+### Additional Diagrams (concise)
+Data model snapshot:
+```mermaid
+erDiagram
+    USERS ||--o{ DEVICES : owns
+    USERS ||--o{ JOURNAL_ENTRIES : writes
+    USERS ||--o{ AI_SCORES : receives
+    USERS ||--o{ REPORTS : receives
+    DEVICES ||--o{ SYNC_EVENTS : emit
+    SYNC_EVENTS ||--o{ METRICS_RAW : store
+    METRICS_RAW ||--o{ METRICS_NORMALIZED : map
+    METRICS_NORMALIZED ||--o{ SLEEP_SESSIONS : materialize
+    METRICS_NORMALIZED ||--o{ HRV_READINGS : materialize
+```
+
+Ingestion flow:
+```mermaid
+sequenceDiagram
+    participant Provider as Wearable/Provider
+    participant API as Webhook Endpoint
+    participant Queue as Job Queue
+    participant Ingest as Ingestion Worker
+    participant DB as Postgres/Timescale
+    Provider->>API: Signed payload
+    API->>Queue: Enqueue ingestion (idempotent)
+    Queue-->>Ingest: Deliver job
+    Ingest->>DB: Save raw + normalized metrics
+```
+
+Dashboard read path:
+```mermaid
+sequenceDiagram
+    participant Client as Frontend
+    participant API as API Gateway
+    participant Cache as Redis
+    participant Analytics as Analytics Service
+    participant DB as Postgres/Timescale
+    Client->>API: GET /dashboard/summary
+    API->>Cache: Lookup cached summary
+    alt hit
+        Cache-->>API: Payload
+    else miss
+        API->>Analytics: Fetch/compute
+        Analytics->>DB: Query metrics
+        Analytics-->>API: Summary
+        API->>Cache: Store TTL
+    end
+    API-->>Client: Response
+```
+
 ## Tech Stack
 - Frontend: Next.js 16, React 19, Tailwind 4, Radix UI, shadcn/ui components, Recharts.
 - Tooling: TypeScript 5, ESLint, PostCSS.
