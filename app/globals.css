@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to make sure that we
+  override the default border color in our styles.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a; /* Slate 900 */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #0d9488; /* Teal 600 */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9; /* Slate 100 */
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b; /* Slate 500 */
+  --accent: #f0fdf4; /* Very light green */
+  --accent-foreground: #166534; /* Green 800 */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0; /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #0d9488;
+  --radius: 0.5rem;
+  --chart-1: #0d9488;
+  --chart-2: #84cc16; /* Lime 500 */
+  --chart-3: #1e293b;
+  --chart-4: #64748b;
+  --chart-5: #cbd5e1;
+}
+
+.dark {
+  --background: #020617; /* Slate 950 */
+  --foreground: #f8fafc; /* Slate 50 */
+  --card: #020617;
+  --card-foreground: #f8fafc;
+  --popover: #020617;
+  --popover-foreground: #f8fafc;
+  --primary: #14b8a6; /* Teal 500 */
+  --primary-foreground: #0f172a;
+  --secondary: #1e293b; /* Slate 800 */
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8; /* Slate 400 */
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #f8fafc;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #14b8a6;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
